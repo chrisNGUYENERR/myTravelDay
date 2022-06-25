@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.18"
+  },
+  "name": "mytravelday",
+  "description": "Flight + Travel ToDo List",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "db:create": "createdb mytravelday",
+    "db:destroy": "dropdb mytravelday",
+    "db:init": "psql -f schema.sql mytravelday",
+    "db:seed": "psql -f seed.sql mytravelday",
+    "db:reset": "npm run db:destroy; npm run db:create && db:init && npm run db:seed",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisNGUYENERR/myTravelDay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chrisNGUYENERR/myTravelDay/issues"
+  },
+  "homepage": "https://github.com/chrisNGUYENERR/myTravelDay#readme"
+}
