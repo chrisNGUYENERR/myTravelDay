@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "express": "^4.18.1",
-    "nodemon": "^2.0.18"
+    "pg-promise": "^10.11.1"
   },
   "name": "mytravelday",
   "description": "Flight + Travel ToDo List",
@@ -10,7 +10,7 @@
   "scripts": {
     "db:create": "createdb mytravelday",
     "db:destroy": "dropdb mytravelday",
-    "db:init": "psql -f schema.sql mytravelday",
+    "db:init": "psql -f schema.sql db5s64ngf57vv2",
     "db:seed": "psql -f seed.sql mytravelday",
     "db:reset": "npm run db:destroy; npm run db:create && db:init && npm run db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
