@@ -11,7 +11,7 @@
     "db:create": "createdb mytravelday",
     "db:destroy": "dropdb mytravelday",
     "db:init": "psql -f schema.sql db5s64ngf57vv2",
-    "db:seed": "psql -f seed.sql mytravelday",
+    "db:seed": "psql -f seed.sql db5s64ngf57vv2",
     "db:reset": "npm run db:destroy; npm run db:create && db:init && npm run db:seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

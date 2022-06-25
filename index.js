@@ -31,6 +31,11 @@ app.get('/', (req,res) => {
 
 });
 
+app.post('/post', (req,res) => {
+    const {name, price} = req.body;
+    db.none('INSERT INTO t (name, price) VALUES ($1, $2)', [name, price])
+    res.send(req.body)
+});
 
 
 
