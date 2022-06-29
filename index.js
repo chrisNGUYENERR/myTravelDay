@@ -15,8 +15,11 @@ const PORT = 4320;
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.get('/', (req,res) => {
-    db.any('SELECT * FROM t')
+
+
+//GET ALL TABLES
+app.get('/getall', (req,res) => {
+    db.any(`SELECT users.name, tasks.todo FROM users INNER JOIN tasks ON users.id = tasks.user_id`)
 
     .then(function(data) {
         // success;
@@ -30,13 +33,31 @@ app.get('/', (req,res) => {
     // res.send('Hello')
 
 });
-
-app.post('/post', (req,res) => {
-    const {name, price} = req.body;
-    db.none('INSERT INTO t (name, price) VALUES ($1, $2)', [name, price])
+//ADD USERS + TASKS
+app.post('/adduser', (req,res) => {
+    const {name} = req.body;
+    db.none(`INSERT INTO users (name) VALUES ($1)`, [name])
     res.send(req.body)
 });
 
+app.post('/addtask', (req,res) => {
+    const {todo, user_id} = req.body;
+    db.none(`INSERT INTO tasks (todo, user_id) VALUES ($1, $2)`, [todo, user_id])
+    res.send(req.body)
+});
+
+//DELETE USERS + TASKS
+app.delete('/deleteuser', (req, res) => {
+    const {name} = req.body;
+    db.none(`DELETE FROM users WHERE name = '${name}'`)
+    res.send(req.body)
+});
+
+app.delete('/deletetask', (req, res) => {
+    const {todo} = req.body;
+    db.none(`DELETE FROM tasks WHERE todo = '${todo}'`)
+    res.send(req.body)
+});
 
 
 
