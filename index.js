@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const es6Renderer = require('express-es6-template-engine');
+// const dbLib = require('./db');
 const pgp = require('pg-promise')();
 const cn = {
     host: 'ec2-18-204-142-254.compute-1.amazonaws.com',
@@ -12,6 +14,12 @@ const cn = {
 const db = pgp(cn);
 const PORT = 4320;
 
+//MIDDLEWARE
+app.use((req,res,next) => {
+    console.log(`Path: ${req.path}`)
+    next()
+});
+
 app.use(express.urlencoded());
 app.use(express.json());
 
@@ -19,28 +27,23 @@ app.use(express.json());
 
 //GET ALL TABLES
 app.get('/getall', (req,res) => {
-    db.any(`SELECT users.name, tasks.todo FROM users INNER JOIN tasks ON users.id = tasks.user_id`)
-
-    .then(function(data) {
-        // success;
-        // console.log(data)
+    db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
+    // dbLib.getAll()
+    .then(data => {
+        console.log(data)
         res.send(data);
     })
-    .catch(function(error) {
-        // error;
-        console.log(error)
-    });
-    // res.send('Hello')
-
 });
+
 //ADD USERS + TASKS
-app.post('/adduser', (req,res) => {
+app.post('/insertuser', (req,res) => {
     const {name} = req.body;
-    db.none(`INSERT INTO users (name) VALUES ($1)`, [name])
-    res.send(req.body)
+    dbLib.insertOne('users', [name])
+    // db.any(`SELECT users.name, tasks.todo FROM users INNER JOIN tasks ON users.id = tasks.user_id`)
+        res.send(req.body);
 });
 
-app.post('/addtask', (req,res) => {
+app.post('/inserttask', (req,res) => {
     const {todo, user_id} = req.body;
     db.none(`INSERT INTO tasks (todo, user_id) VALUES ($1, $2)`, [todo, user_id])
     res.send(req.body)
