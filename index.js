@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const es6Renderer = require('express-es6-template-engine');
-// const dbLib = require('./db');
 const pgp = require('pg-promise')();
 const cn = {
     host: 'ec2-18-204-142-254.compute-1.amazonaws.com',
@@ -34,8 +33,9 @@ app.use(express.json());
 app.get('/getall', async (req,res) => {
     try {
         let response = await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
-        // dbLib.getAll()
-        res.render('index', {locals: {data: response}})
+        res.render('index', {
+            locals: {data: response}
+        })
     } catch (error) {
         res.send({
             error, 
@@ -47,8 +47,7 @@ app.get('/getall', async (req,res) => {
 //ADD USERS + TASKS
 app.post('/insertuser', (req,res) => {
     const {name} = req.body;
-    dbLib.insertOne('users', [name])
-    // db.any(`SELECT users.name, tasks.todo FROM users INNER JOIN tasks ON users.id = tasks.user_id`)
+    db.any(`INSERT INTO users (name) VALUES ($1)`, [name])
         res.send(req.body);
 });
 
