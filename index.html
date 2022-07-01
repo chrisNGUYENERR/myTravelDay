@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="flight"></div>
+    <script>
+
+    async function getFlights() {
+        let params = new URLSearchParams({
+            access_key: 'd0732936753ee91be630c93a71876a13',
+            // limit: 10,
+            flight_iata: 'AA1832'
+        });
+        
+        try {
+            let response = await fetch(`http://api.aviationstack.com/v1/flights?${params}`)
+            .then(res => res.json()).then (({data}) => data[0]);
+            //console.log('')
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    async function renderFlight(){
+        let flight = await getFlights();
+        // console.log(flights)
+        
+        let htmlSegment = `<div class="flight">
+            <h2>${flight.airline.name}</h2>
+            <h2>${flight.arrival.gate}</h2>
+            <h2>${flight.departure.iata}</h2>
+            <h2>${flight.flight.number}</h2>
+
+        </div>`;
+        
+        let flightContainer = document.getElementById("flight");
+    flightContainer.innerHTML = htmlSegment
+    }
+    // let flight = document.getElementById("flight");
+    // let params = new URLSearchParams({
+    //     access_key: 'd0732936753ee91be630c93a71876a13',
+    //     // limit: 10,
+    //     flight_iata: 'AA1832'
+    // });
+    // fetch(`http://api.aviationstack.com/v1/flights?${params}`).then(res => res.json()).then (({data}) => console.log(data[0].airline));
+    // let flightInformation = (data) => {
+    //        return data.map((info)=>{
+    //             let {airline} = info;
+    //             console.log(airline)
+    //     return `${airline}`
+    //        }).join("");
+    //        document.getElementById("flight").innerHTML=flightInformation
+    //      }
+         
+        // Todo: Call the functions
+         renderFlight();
+
+
+    </script>
+</body>
+</html>
