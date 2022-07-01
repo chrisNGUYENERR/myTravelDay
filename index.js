@@ -14,6 +14,11 @@ const cn = {
 const db = pgp(cn);
 const PORT = 4320;
 
+
+app.engine('html', es6Renderer);
+app.set('views', 'templates');
+app.set('view engine', 'html');
+
 //MIDDLEWARE
 app.use((req,res,next) => {
     console.log(`Path: ${req.path}`)
@@ -26,13 +31,17 @@ app.use(express.json());
 
 
 //GET ALL TABLES
-app.get('/getall', (req,res) => {
-    db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
-    // dbLib.getAll()
-    .then(data => {
-        console.log(data)
-        res.send(data);
-    })
+app.get('/getall', async (req,res) => {
+    try {
+        let response = await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
+        // dbLib.getAll()
+        res.render('index', {locals: {data: response}})
+    } catch (error) {
+        res.send({
+            error, 
+            msg: 'Failed to retrieve users and todos'
+        })
+    }
 });
 
 //ADD USERS + TASKS
