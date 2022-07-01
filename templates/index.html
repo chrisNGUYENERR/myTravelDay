@@ -8,6 +8,11 @@
 </head>
 <body>
     <h1>Hello</h1>
-    <div> ${data} </div>
+    <div>${data.map(users => {
+        return `${users.name}`
+    }).join('')}</div>
+    <div>${data.map(tasks => {
+        return `${tasks.todo}`
+    }).join('')}</div>
 </body>
 </html>
