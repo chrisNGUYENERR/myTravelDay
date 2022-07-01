@@ -29,12 +29,14 @@ app.use(express.json());
 
 
 
-//GET ALL TABLES
+//GET TABLES
 app.get('/getall', async (req,res) => {
     try {
         let response = await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
         res.render('index', {
-            locals: {data: response}
+            locals: {
+                data: response
+            }
         })
     } catch (error) {
         res.send({
@@ -43,6 +45,27 @@ app.get('/getall', async (req,res) => {
         })
     }
 });
+
+app.get('/getusertodos', async (req,res) => {
+    const {name} = req.body;
+    try {
+        let response =  await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.name = '${name}'`)
+        console.log(response)
+        res.render('userTodos', {
+            locals: {
+                data: response
+            }
+        })
+    } catch (error) {
+        res.send({
+            error,
+            msg: 'Failed to retrieve user and todos'
+        })
+    }
+});
+
+
+
 
 //ADD USERS + TASKS
 app.post('/insertuser', (req,res) => {

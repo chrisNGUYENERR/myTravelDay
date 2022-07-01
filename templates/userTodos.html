@@ -6,24 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
-    <h1>Hello</h1>
-    <div class="table">
-        <ul>${data.map(users => {
-            return `<li>${users.name}</li>`
-        }).join('')}</ul>
-        <ul class="tasks">${data.map(tasks => {
+    <h1>User Todo List</h1>
+    <div class="userTable">
+        <div>${data[0].name}</div> <!-- STOPPED HERE: unable to render name -->
+        <div>${data.map(tasks => {
             return `<li>${tasks.todo}</li>`
-        }).join('')}</ul>
+            }).join('')}
+        </div>
     </div>
 </body>
 <style>
-    .table {
+    .userTable{
         display: flex;
         flex-direction: row;
         justify-content: center;
-        align-items: center;
     }
 </style>
 </html>
