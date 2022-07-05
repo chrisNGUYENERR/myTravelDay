@@ -56,12 +56,12 @@ app.get('/getusertodos', async (req,res) => {
     const {username} = req.body;
     try {
         let response =  await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`)
-        console.log(response)
-        // res.render('userTodos', {
-        //     locals: {
-        //         data: response
-        //     }
-        // })
+        // console.log(response)
+        res.render('userTodos', {
+            locals: {
+                data: response
+            }
+        })
     } catch (error) {
         res.send({
             error,
@@ -77,6 +77,7 @@ app.get('/login', (req,res) => {
             error: null
         },
         partials: {
+            bootstrap: './templates/partials/bootstrap.html',
             navbar: './templates/partials/nav.html'
         }
     });
@@ -84,7 +85,6 @@ app.get('/login', (req,res) => {
 
 app.post('/login', (req,res) => {
     const {username, password} = req.body;
-
     db.any(`SELECT username, password FROM users WHERE username = '${username}'`)
     .then(user => {
         bcrypt.compare(password, user[0].password, (err, match) => {
@@ -105,6 +105,7 @@ app.get('/register', (req,res) => {
             error: null
         },
         partials: {
+            bootstrap: './templates/partials/bootstrap.html',
             navbar: './templates/partials/nav.html'
         }
     });
