@@ -11,6 +11,7 @@ const cn = {
     ssl: { rejectUnauthorized: false }
 };
 const db = pgp(cn);
+const bcrypt = require('bcrypt');
 const PORT = 4320;
 
 app.engine('html', es6Renderer);
@@ -36,8 +37,9 @@ app.get('/', (req,res) => {
 
 app.get('/getall', async (req,res) => {
     try {
-        let response = await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
-        res.render('index', {
+        let response = await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
+        //renders undefined as username
+        res.render('userTodos', {
             locals: {
                 data: response
             }
@@ -51,15 +53,15 @@ app.get('/getall', async (req,res) => {
 });
 
 app.get('/getusertodos', async (req,res) => {
-    const {name} = req.body;
+    const {username} = req.body;
     try {
-        let response =  await db.any(`SELECT users.name, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.name = '${name}'`)
+        let response =  await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`)
         console.log(response)
-        res.render('userTodos', {
-            locals: {
-                data: response
-            }
-        })
+        // res.render('userTodos', {
+        //     locals: {
+        //         data: response
+        //     }
+        // })
     } catch (error) {
         res.send({
             error,
@@ -68,13 +70,60 @@ app.get('/getusertodos', async (req,res) => {
     }
 });
 
+//LOGIN
+app.get('/login', (req,res) => {
+    res.render('login', {
+        locals: {
+            error: null
+        },
+        partials: {
+            navbar: './templates/partials/nav.html'
+        }
+    });
+});
+
+app.post('/login', (req,res) => {
+    const {username, password} = req.body;
+
+    db.any(`SELECT username, password FROM users WHERE username = '${username}'`)
+    .then(user => {
+        bcrypt.compare(password, user[0].password, (err, match) => {
+            if (match) {
+                res.send('Successful login')
+            } else {
+                res.send('Unable to login')
+            }
+        });
+    });
+});
 
 
+//REGISTER
+app.get('/register', (req,res) => {
+    res.render('register', {
+        locals: {
+            error: null
+        },
+        partials: {
+            navbar: './templates/partials/nav.html'
+        }
+    });
+});
+
+app.post('/register', async (req,res) => {
+    const {username, password} = req.body;
+    bcrypt.hash(password, 10, (err, hash) => {
+        db.none(`INSERT INTO users (username, password) VALUES ($1, $2)`, [username, hash])
+        .then((result) => {
+            return res.redirect('/');
+        });
+    });
+});
 
 //ADD USERS + TASKS
 app.post('/insertuser', (req,res) => {
     const {name} = req.body;
-    db.any(`INSERT INTO users (name) VALUES ($1)`, [name])
+    db.none(`INSERT INTO users (name) VALUES ($1)`, [name])
     console.log(req.body);
     res.send(req.body)
 });

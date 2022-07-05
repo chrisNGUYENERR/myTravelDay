@@ -9,7 +9,7 @@
 <body>
     <h1>User Todo List</h1>
     <div class="userTable">
-        <div>${data[0].name}</div> <!-- STOPPED HERE: unable to render name -->
+        <div>${data[0].username}</div> <!-- STOPPED HERE: unable to render name -->
         <div>${data.map(tasks => {
             return `<li>${tasks.todo}</li>`
             }).join('')}
