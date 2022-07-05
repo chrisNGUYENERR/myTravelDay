@@ -85,6 +85,7 @@ app.get('/login', (req,res) => {
 
 app.post('/login', (req,res) => {
     const {username, password} = req.body;
+
     db.any(`SELECT username, password FROM users WHERE username = '${username}'`)
     .then(user => {
         bcrypt.compare(password, user[0].password, (err, match) => {
