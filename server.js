@@ -38,7 +38,6 @@ app.get('/', (req,res) => {
 app.get('/getall', async (req,res) => {
     try {
         let response = await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)
-        //renders undefined as username
         res.render('userTodos', {
             locals: {
                 data: response
@@ -52,13 +51,14 @@ app.get('/getall', async (req,res) => {
     }
 });
 
-app.get('/getusertodos', async (req,res) => {
-    const {username} = req.body;
+app.get('/getusertodos/:username', async (req,res) => {
+    const {username} = req.params;
     try {
         let response =  await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`)
         // console.log(response)
         res.render('userTodos', {
             locals: {
+                username: username,
                 data: response
             }
         })
@@ -90,7 +90,8 @@ app.post('/login', (req,res) => {
     .then(user => {
         bcrypt.compare(password, user[0].password, (err, match) => {
             if (match) {
-                res.send('Successful login')
+                // res.send('Successful login')
+                res.redirect(`/getusertodos/${username}`)
             } else {
                 res.send('Unable to login')
             }
