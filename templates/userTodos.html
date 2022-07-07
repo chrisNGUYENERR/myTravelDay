@@ -9,12 +9,12 @@
 <body>
     <div class="header">
         <h1>myTravelDay</h1>
-        <form method="GET" action="/login" class="inline">
+        <!-- <form method="GET" action="/login" class="inline">
             <button type="submit" name="submitBtnLink" class="link-button">
               Logout
-            </button>
+            </button> -->
     </div>
-    <h1>Welcome back, ${username}!</h1> 
+    <h1>Welcome back, ${data[0].username}!</h1> 
     <div class="userTable">
         <div>My ToDo List:</div>
         <div>${data.map(tasks => {
@@ -22,9 +22,9 @@
             }).join('')}
         </div>
     </div>
-    <form class="newTask" action="/inserttask" method="POST">
-        <input type="text" class="taskValue" placeholder="Type New Task">
-        <button type="submit" class="newTaskBtn">Add</button>
+    <form action="/inserttask" method="POST">
+        <input type="text" name="todo" placeholder="Type New Task">
+        <button type="submit">Add</button>
     </form>
 </body>
 <style>
