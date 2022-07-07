@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const es6Renderer = require('express-es6-template-engine');
 const pgp = require('pg-promise')();
 const cn = {
@@ -26,7 +28,18 @@ app.use((req,res,next) => {
     next()
 });
 
-
+app.use(cookieParser());
+app.use(
+    session({
+        secret: 'secret',
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            secure: false,
+            maxAge: 2592000,
+        }
+    })
+);
 
 
 //GET TABLES
@@ -51,14 +64,12 @@ app.get('/getall', async (req,res) => {
     }
 });
 
-app.get('/getusertodos/:username', async (req,res) => {
-    const {username} = req.params;
+app.get('/getusertodos/', async (req,res) => {
     try {
+        let {username} = req.session.user[0];
         let response =  await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`)
-        // console.log(response)
         res.render('userTodos', {
             locals: {
-                username: username,
                 data: response
             }
         })
@@ -84,13 +95,12 @@ app.get('/login', (req,res) => {
 
 app.post('/login', (req,res) => {
     const {username, password} = req.body;
-
     db.any(`SELECT username, password FROM users WHERE username = '${username}'`)
-    .then(user => {
-        bcrypt.compare(password, user[0].password, (err, match) => {
+    .then(data => {
+        bcrypt.compare(password, data[0].password, (err, match) => {
             if (match) {
-                // res.send('Successful login')
-                res.redirect(`/getusertodos/${username}`)
+                req.session.user = data;
+                res.redirect(`/getusertodos`)
             } else {
                 res.render('login', {
                     locals: {
@@ -137,10 +147,12 @@ app.post('/insertuser', (req,res) => {
     res.send(req.body)
 });
 
-app.post('/inserttask', (req,res) => {
-    const {todo, user_id} = req.body;
-    db.none(`INSERT INTO tasks (todo, user_id) VALUES ($1, $2)`, [todo, user_id])
-    res.send(req.body)
+app.post('/inserttask', async (req,res) => {
+        const {todo} = req.body;
+        let {username} = req.session.user[0]
+        let user_id = await db.any(`SELECT id FROM users WHERE username = '${username}'`)
+        await db.none(`INSERT INTO tasks (todo, user_id) VALUES ($1, $2)`, [todo, user_id[0].id])
+            res.redirect('/getusertodos');
 });
 
 //DELETE USERS + TASKS
