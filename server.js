@@ -77,8 +77,7 @@ app.get('/login', (req,res) => {
             error: null
         },
         partials: {
-            bootstrap: './templates/partials/bootstrap.html',
-            navbar: './templates/partials/nav.html'
+            bootstrap: './templates/partials/bootstrap.html'
         }
     });
 });
@@ -93,7 +92,15 @@ app.post('/login', (req,res) => {
                 // res.send('Successful login')
                 res.redirect(`/getusertodos/${username}`)
             } else {
-                res.send('Unable to login')
+                res.render('login', {
+                    locals: {
+                        error: 'Incorrect username or password'
+                    },
+                    partials: {
+                        bootstrap: './templates/partials/bootstrap.html'
+                    }
+                })
+                // res.send('Unable to login')
             }
         });
     });
@@ -107,8 +114,7 @@ app.get('/register', (req,res) => {
             error: null
         },
         partials: {
-            bootstrap: './templates/partials/bootstrap.html',
-            navbar: './templates/partials/nav.html'
+            bootstrap: './templates/partials/bootstrap.html'
         }
     });
 });
@@ -118,7 +124,7 @@ app.post('/register', async (req,res) => {
     bcrypt.hash(password, 10, (err, hash) => {
         db.none(`INSERT INTO users (username, password) VALUES ($1, $2)`, [username, hash])
         .then((result) => {
-            return res.redirect('/');
+            return res.redirect('/login');
         });
     });
 });
