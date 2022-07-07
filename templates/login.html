@@ -8,20 +8,25 @@
 </head>
 
 <body>
-  ${navbar}
   ${bootstrap}
     <h1>myTravelDay</h1>
     <h3>Please Login:</h3>
+    ${error ? `${error}`: ''}
     <form action="/login" method="POST" id="login">
-        <div>
-          <label for="username">Username</label>
-          <input type="username" name="username" id="username" required>
-        </div>
-        <div>
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" required>
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      <div>
+        <label for="username">Username</label>
+        <input type="username" name="username" id="username" required>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+    Need an account?
+    <form method="GET" action="/register" class="inline">
+      <button type="submit" name="submitBtnLink" class="link-button">
+        Sign up here!
+      </button>
 </body>
 </html>

@@ -7,16 +7,32 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>User Todo List</h1>
+    <div class="header">
+        <h1>myTravelDay</h1>
+        <form method="GET" action="/login" class="inline">
+            <button type="submit" name="submitBtnLink" class="link-button">
+              Logout
+            </button>
+    </div>
+    <h1>Welcome back, ${username}!</h1> 
     <div class="userTable">
-        <div>${username}</div> <!-- STOPPED HERE: unable to render name -->
+        <div>My ToDo List:</div>
         <div>${data.map(tasks => {
             return `<li>${tasks.todo}</li>`
             }).join('')}
         </div>
     </div>
+    <form class="newTask" action="/inserttask" method="POST">
+        <input type="text" class="taskValue" placeholder="Type New Task">
+        <button type="submit" class="newTaskBtn">Add</button>
+    </form>
 </body>
 <style>
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
     .userTable{
         display: flex;
         flex-direction: row;
