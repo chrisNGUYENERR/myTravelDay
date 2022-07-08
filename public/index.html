@@ -4,10 +4,168 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myTravelDay</title>
+    <title>Document</title>
+
+    <style>
+        body {
+            background-color: #63a4ff;
+            background-image: radial-gradient(circle, #63a4ff 0%, #83eaf1 74%);
+            color: #fff;
+            font-family: Helvetica;
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .flight_number_form {
+            margin: 50px;
+            text-align:center;
+        }
+        
+        .flight_number_form label {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .flight_number_form input {
+            font-size: 24px;
+            border:none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .flight_number_form input[type=submit] {
+            background: rgb(25, 87, 211);
+            color: #fff;
+            font-size: 24px;
+            margin: 5px auto;
+            font-weight: bold;
+            padding: 15px 30px;
+        }
+
+        .flight {
+            background: #fff;
+            border: 1px #eee solid;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+        }
+
+        .flight div {
+            padding:10px;
+            border-left: 1px #ccc solid;
+        }
+
+        .flight div:first-child {
+            border-left: none;
+        }
+
+        #flight h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px 0;
+            color: #111;
+            padding: 0;
+        }
+
+        #flight p {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            color: #444;
+            padding: 0px
+        }
+    </style>
 </head>
 <body>
-    <h1>Main Page</h1>
+    <form onsubmit="renderFlight(event);" class="flight_number_form">
+        <label for="fnum">Flight Number</label><br>
+        <input type="text" name="flightNumber" id="fnum" placeholder="Enter Flight Number"><br><br>
+        <input type="submit" value="Submit"/>
+      </form>
+    <div id="flight"></div>
+    <script>
 
+    async function getFlights(flightNumber) {
+        let params = new URLSearchParams({
+            access_key: '16500e58329a0f5167ac6e6cb6cfeb88',
+            limit: 10,
+            flight_iata: flightNumber
+        });
+        
+        try {
+            let response = await fetch(`http://api.aviationstack.com/v1/flights?${params}`);
+            let json_response = await response.json();
+            return json_response.data[0];
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    // http://api.aviationstack.com/v1/flights?flight_iata=AF639&access_key=d0732936753ee91be630c93a71876a13
+    async function renderFlight(event){
+        event.preventDefault();
+        let flightNumber = document.getElementById("fnum").value;
+        let flight = await getFlights(flightNumber);
+
+        app.post('/sendflightinfo', (req,res) => {
+            let flightInfo = flight;
+            console.log(flightInfo);
+        })
+
+        /*
+        1)  create a post route to send the flight data into the server
+        2)  have the route /sendFlightInfo -> flight will exist on the req.body
+        3)  inside the /sendFlightInfo  route render the get userTodo page via res.render('view')
+        */
+        let htmlSegment = `<div class="flight">
+            <div>
+                <h3>Airline Name:</h3>
+                <p>${flight.airline.name}</p>
+            </div>
+            <div>
+                <h3>Departure time:</h3>
+                <p>${flight.departure.scheduled}</p>
+            </div>
+            <div>
+                <h3>Departure airport:</h3>
+                <p>${flight.departure.airport}</p>
+            </div>
+            <div>
+                <h3>Arrival airport:</h3>
+                <p>${flight.arrival.airport}</p>
+            </div>
+            <div>
+                <h3>Arrival gate</h3>
+                <p>${flight.arrival.gate}</p>
+            </div>
+        </div>`;
+        
+        let flightContainer = document.getElementById("flight");
+        flightContainer.innerHTML = htmlSegment;
+    }
+    
+    // let flight = document.getElementById("flight");
+    // let params = new URLSearchParams({
+    //     access_key: 'd0732936753ee91be630c93a71876a13',
+    //     // limit: 10,
+    //     flight_iata: 'AA1832'
+    // });
+    // fetch(`http://api.aviationstack.com/v1/flights?${params}`).then(res => res.json()).then (({data}) => console.log(data[0].airline));
+    // let flightInformation = (data) => {
+    //        return data.map((info)=>{
+    //             let {airline} = info;
+    //             console.log(airline)
+    //     return `${airline}`
+    //        }).join("");
+    //        document.getElementById("flight").innerHTML=flightInformation
+    //      }
+         
+        // Todo: Call the functions
+
+
+    </script>
 </body>
 </html>

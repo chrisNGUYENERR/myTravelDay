@@ -47,7 +47,6 @@ app.get('/', (req,res) => {
     res.send('Hello');
 })
 
-
 app.get('/getall', async (req,res) => {
     try {
         let response = await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`)

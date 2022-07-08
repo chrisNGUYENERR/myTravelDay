@@ -17,8 +17,12 @@
     <h1>Welcome back, ${data[0].username}!</h1> 
     <div class="userTable">
         <div>My ToDo List:</div>
-        <div>${data.map(tasks => {
-            return `<li>${tasks.todo}</li>`
+        <div class="todoList">${data.map(tasks => {
+            return `<form action="/deletetask" method="POST">
+                        <div class="task"></div>${tasks.todo}
+                        <button type="submit" id="deleteBtn">Delete</button>
+                    </form>
+                    `
             }).join('')}
         </div>
     </div>
@@ -37,6 +41,10 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
+    }
+    .todoList {
+        display: flex;
+        flex-direction: row;
     }
 </style>
 </html>
