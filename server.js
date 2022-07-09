@@ -21,7 +21,6 @@ app.engine('html', es6Renderer);
 app.set('views', 'templates');
 app.set('view engine', 'html');
 
-app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use((req,res,next) => {
@@ -103,7 +102,7 @@ app.post('/login', (req,res) => {
         bcrypt.compare(password, data[0].password, (err, match) => {
             if (match) {
                 req.session.user = data;
-                res.redirect(`/getflightinfo`)
+                res.redirect(`/addflightinfo`)
             } else {
                 res.render('login', {
                     locals: {
@@ -113,7 +112,6 @@ app.post('/login', (req,res) => {
                         bootstrap: './templates/partials/bootstrap.html'
                     }
                 })
-                // res.send('Unable to login')
             }
         });
     });
@@ -173,7 +171,7 @@ app.delete('/deletetask', (req, res) => {
 
 
 //FETCH API
-app.get('/getflightinfo', (req,res) => {
+app.get('/addflightinfo', (req,res) => {
     res.render('flightinfo', {
         locals: {
             error: null
@@ -188,10 +186,8 @@ app.post('/addflightinfo', async (req,res) => {
     const {flightNumber} = req.body;
     const params = {
         access_key: '100cc2dce35bc5f107fb190518b0a281',
-        limit: 10,
         flight_iata: `${flightNumber}`
     };
-    // console.log(params)
     await axios.get('http://api.aviationstack.com/v1/flights?', {params})
     .then(response => {
         req.session.api = response.data.data[0]
