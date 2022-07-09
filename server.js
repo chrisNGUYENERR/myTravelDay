@@ -42,39 +42,12 @@ app.use(
 );
 
 //GET TABLES
-app.get("/", (req, res) => {
-  res.send("Hello");
-});
-
-app.get("/getall", async (req, res) => {
-  try {
-    let response = await db.any(
-      `SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id`
-    );
-    res.render("userTodos", {
-      locals: {
-        data: response,
-      },
-      partials: {
-        bootstrap: "./templates/partials/bootstrap.html",
-        styles: "./templates/partials/styles.html",
-      },
-    });
-  } catch (error) {
-    res.send({
-      error,
-      msg: "Failed to retrieve users and todos",
-    });
-  }
-});
-
 app.get("/getusertodos/", async (req, res) => {
   try {
     let { username } = req.session.user[0];
     let flightInfo = await db.any(
       `SELECT users.username, flightinfo.airline, flightinfo.dep_time, flightinfo.dep_port, flightinfo.arr_port, flightinfo.arr_gate FROM users LEFT JOIN flightinfo ON users.id = flightinfo.user_id WHERE users.username = '${username}'`
     );
-    console.log(flightInfo);
     let response = await db.any(
       `SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`
     );
