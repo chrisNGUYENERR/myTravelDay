@@ -38,17 +38,17 @@
 
 
 
+    <div>My ToDo List:</div>
 
     <div class="userTable">
-        <div>My ToDo List:</div>
-        <div class="todoList">${data.map(tasks => {
-            return `<form action="/deletetask" method="POST">
-                        <div class="task"></div>${tasks.todo}
-                        <button type="submit" id="deleteBtn">Delete</button>
+        ${data.map(tasks => {
+            return `<form action="/deletetask" method="POST" class="taskForm">
+                        <li><label for="taskList" class="taskList">${tasks.todo}</label></li>
+                        <button type="submit" class="deleteBtn">Delete</button>
                     </form>
                     `
             }).join('')}
-        </div>
+        
     </div>
     <form action="/inserttask" method="POST">
         <input type="text" name="todo" placeholder="Type New Task">

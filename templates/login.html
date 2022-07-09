@@ -12,6 +12,9 @@
   ${bootstrap}
   ${header}
   <div class="container">
+    <h1>myTravelDay</h1>
+    <br>
+    <br>
     <h3>Please Login:</h3>
     ${error ? `${error}`: ''}
     <form action="/login" method="POST" id="login">
@@ -23,12 +26,16 @@
       </div>
       <button class="formBtn" type="submit">Login</button>
     </form>
-    <p>Need an account?</p>
-    <form method="GET" action="/register" class="inline">
+    <br>
+    <br>
+    <div class="pathForm">
+    Need an account?
+    <form method="GET" action="/register" class="pathForm">
       <button type="submit" name="submitBtnLink" class="link-button">
         Sign up here!
       </button>
-  </div>
+    </form>
+    </div>
 </body>
 
 <style>

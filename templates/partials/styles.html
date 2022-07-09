@@ -24,11 +24,16 @@
         }
 
         .header {
+            flex-direction: row;
+            font-size: 16px;
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
             text-align: left;
             background: #fff;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
         }
 
         .header .container {
@@ -119,23 +124,44 @@
             margin: 5px 0;
         }
 
-    .userTable{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-    .todoList {
+
+    .taskForm {
         display: flex;
         flex-direction: row;
-        font-size: 16px;
+        width: 400px;
+        justify-content: space-between;
     }
+    
+    .logoutBtn {
+        display: flex;
+        
+        width: 100vw;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+
+    .link-button {
+        background: none!important;
+        border: none;
+        padding: 0!important;
+        color: #069;
+        text-decoration: underline;
+    }
+
     .registerForm {
         display: flex;
         flex-direction: column;
         /* align-content: center; */
         justify-content: center;
-
     }
+
+    .pathForm {
+        display: flex;
+        flex-direction: row;
+    }
+
+
     input {
         text-align: center;
     }

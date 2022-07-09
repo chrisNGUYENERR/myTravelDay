@@ -11,6 +11,9 @@
   ${bootstrap}
   ${header}
   <div class="container">
+    <h1>myTravelDay</h1>
+    <br>
+    <br>
     <h3>Please Register:</h3>
     <form action="/register" method="POST" class="registerForm">
         <div>
@@ -21,12 +24,15 @@
         </div>
         <button class="formBtn" type="submit">Register</button>
       </form>
-  Already have an account? 
-  <form method="GET" action="/login" class="newAccountForm">
-    <button type="submit" name="submitBtnLink" class="link-button">
-      Sign in here!
-    </button>
-  </form>
-</div>
+      <br>
+      <br>
+      <div class="pathForm">
+          Already have an account? 
+        <form method="GET" action="/login" class="pathForm">
+          <button type="submit" name="submitBtnLink" class="link-button">
+            Sign in here!
+          </button>
+        </form>
+      </div>
 </body>
 </html>
