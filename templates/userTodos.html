@@ -11,11 +11,9 @@
     ${bootstrap}
     <div class="header">
         <h1>myTravelDay</h1>
-        <!-- <form method="GET" action="/login" class="inline">
-            <button type="submit" name="submitBtnLink" class="link-button">
-              Logout
-            </button> -->
     </div>
+    <br>
+    <br>
     <h1>Welcome back, ${data[0].username}!</h1> 
 
     <div class="flight">
@@ -43,21 +41,27 @@
 
 
 
+    <div>My ToDo List:</div>
 
     <div class="userTable">
-        <div>My ToDo List:</div>
-        <div class="todoList">${data.map(tasks => {
-            return `<form action="/deletetask" method="POST">
-                        <div class="task"></div>${tasks.todo}
-                        <button type="submit" id="deleteBtn">Delete</button>
+        ${data.map(tasks => {
+            return `<form action="/deletetask" method="POST" class="taskForm">
+                        <li><label for="taskList" class="taskList">${tasks.todo}</label></li>
+                        <button type="submit" class="deleteBtn">Delete</button>
                     </form>
                     `
             }).join('')}
-        </div>
     </div>
     <form action="/inserttask" method="POST">
         <input type="text" name="todo" placeholder="Type New Task">
         <button type="submit">Add</button>
     </form>
+
+    <div class="container logoutBtn">
+        <form method="GET" action="/login" class="inline">
+            <button type="submit" name="logoutBtn" class="link-button">
+                Logout
+            </button>
+    </div>
 </body>
 </html>

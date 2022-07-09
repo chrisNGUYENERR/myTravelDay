@@ -11,6 +11,8 @@
   ${styles}
   ${bootstrap}
     <h1>myTravelDay</h1>
+    <br>
+    <br>
     <h3>Please Login:</h3>
     ${error ? `${error}`: ''}
     <form action="/login" method="POST" id="login">
@@ -22,11 +24,16 @@
       </div>
       <button class="formBtn" type="submit">Login</button>
     </form>
+    <br>
+    <br>
+    <div class="pathForm">
     Need an account?
-    <form method="GET" action="/register" class="inline">
+    <form method="GET" action="/register" class="pathForm">
       <button type="submit" name="submitBtnLink" class="link-button">
         Sign up here!
       </button>
+    </form>
+    </div>
 </body>
 
 <style>
