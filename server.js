@@ -3,6 +3,7 @@ const app = express();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const es6Renderer = require('express-es6-template-engine');
+const axios = require('axios');
 const pgp = require('pg-promise')();
 const cn = {
     host: 'ec2-18-204-142-254.compute-1.amazonaws.com',
@@ -21,8 +22,8 @@ app.set('views', 'templates');
 app.set('view engine', 'html');
 
 app.use(express.static(__dirname + '/public'));
-app.use(express.urlencoded());
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use((req,res,next) => {
     console.log(`Path: ${req.path}`)
     next()
@@ -66,10 +67,13 @@ app.get('/getall', async (req,res) => {
 app.get('/getusertodos/', async (req,res) => {
     try {
         let {username} = req.session.user[0];
+        let flightInfo = await db.any(`SELECT users.username, flightinfo.airline, flightinfo.dep_time, flightinfo.dep_port, flightinfo.arr_port, flightinfo.arr_gate FROM users LEFT JOIN flightinfo ON users.id = flightinfo.user_id WHERE users.username = '${username}'`)
+        console.log(flightInfo)
         let response =  await db.any(`SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`)
         res.render('userTodos', {
             locals: {
-                data: response
+                data: response,
+                flight: flightInfo
             }
         })
     } catch (error) {
@@ -99,7 +103,7 @@ app.post('/login', (req,res) => {
         bcrypt.compare(password, data[0].password, (err, match) => {
             if (match) {
                 req.session.user = data;
-                res.redirect(`/getusertodos`)
+                res.redirect(`/getflightinfo`)
             } else {
                 res.render('login', {
                     locals: {
@@ -168,8 +172,37 @@ app.delete('/deletetask', (req, res) => {
 });
 
 
+//FETCH API
+app.get('/getflightinfo', (req,res) => {
+    res.render('flightinfo', {
+        locals: {
+            error: null
+        },
+        partials: {
+            bootstrap: './templates/partials/bootstrap.html'
+        }
+    });
+});
 
-
+app.post('/addflightinfo', async (req,res) => {
+    const {flightNumber} = req.body;
+    const params = {
+        access_key: '100cc2dce35bc5f107fb190518b0a281',
+        limit: 10,
+        flight_iata: `${flightNumber}`
+    };
+    // console.log(params)
+    await axios.get('http://api.aviationstack.com/v1/flights?', {params})
+    .then(response => {
+        req.session.api = response.data.data[0]
+    })
+    let {username} = req.session.user[0]
+    let user_id = await db.any(`SELECT id FROM users WHERE username = '${username}'`)
+    let {airline, departure, arrival} = req.session.api
+    db.none(`INSERT INTO flightinfo (airline, dep_time, dep_port, arr_port, arr_gate, user_id) VALUES ($1, $2, $3, $4, $5, $6)`, 
+    [`${airline.name}`, `${departure.scheduled}`, `${departure.airport}`, `${arrival.airport}`, `${arrival.gate}`,  user_id[0].id])
+    res.redirect('/getusertodos');
+})
 
 
 

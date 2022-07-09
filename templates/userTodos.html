@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<script src="/server.js"></script>
 <body>
     <div class="header">
         <h1>myTravelDay</h1>
@@ -15,6 +16,33 @@
             </button> -->
     </div>
     <h1>Welcome back, ${data[0].username}!</h1> 
+
+    <div class="flight">
+        <div>
+            <h3>Airline Name:</h3>
+            <p>${flight[0].airline}</p>
+        </div>
+        <div>
+            <h3>Departure time:</h3>
+            <p>${flight[0].dep_time}</p>
+        </div>
+        <div>
+            <h3>Departure airport:</h3>
+            <p>${flight[0].dep_port}</p>
+        </div>
+        <div>
+            <h3>Arrival airport:</h3>
+            <p>${flight[0].arr_port}</p>
+        </div>
+        <div>
+            <h3>Arrival gate</h3>
+            <p>${flight[0].arr_gate}</p>
+        </div>
+    </div>
+
+
+
+
     <div class="userTable">
         <div>My ToDo List:</div>
         <div class="todoList">${data.map(tasks => {
@@ -32,6 +60,76 @@
     </form>
 </body>
 <style>
+    body {
+            background-color: #63a4ff;
+            background-image: radial-gradient(circle, #63a4ff 0%, #83eaf1 74%);
+            /* color: #fff; */
+            font-family: Helvetica;
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .flight_number_form {
+            margin: 50px;
+            text-align:center;
+        }
+        
+        .flight_number_form label {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .flight_number_form input {
+            font-size: 24px;
+            border:none;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .flight_number_form input[type=submit] {
+            background: rgb(25, 87, 211);
+            color: #fff;
+            font-size: 24px;
+            margin: 5px auto;
+            font-weight: bold;
+            padding: 15px 30px;
+        }
+
+        .flight {
+            background: #fff;
+            border: 1px #eee solid;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+        }
+
+        .flight div {
+            padding:10px;
+            border-left: 1px #ccc solid;
+        }
+
+        .flight div:first-child {
+            border-left: none;
+        }
+
+        #flight h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 5px 0;
+            color: #111;
+            padding: 0;
+        }
+
+        #flight p {
+            font-size: 18px;
+            margin: 0 0 10px 0;
+            color: #444;
+            padding: 0px
+        }
     .header {
         display: flex;
         flex-direction: row;

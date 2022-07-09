@@ -109,12 +109,6 @@
         event.preventDefault();
         let flightNumber = document.getElementById("fnum").value;
         let flight = await getFlights(flightNumber);
-
-        app.post('/sendflightinfo', (req,res) => {
-            let flightInfo = flight;
-            console.log(flightInfo);
-        })
-
         /*
         1)  create a post route to send the flight data into the server
         2)  have the route /sendFlightInfo -> flight will exist on the req.body
