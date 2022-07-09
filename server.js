@@ -58,6 +58,7 @@ app.get("/getall", async (req, res) => {
       partials: {
         bootstrap: "./templates/partials/bootstrap.html",
         styles: "./templates/partials/styles.html",
+        header: "./templates/partials/header.html",
       },
     });
   } catch (error) {
@@ -86,6 +87,7 @@ app.get("/getusertodos/", async (req, res) => {
       partials: {
         bootstrap: "./templates/partials/bootstrap.html",
         styles: "./templates/partials/styles.html",
+        header: "./templates/partials/header.html",
       },
     });
   } catch (error) {
@@ -105,6 +107,7 @@ app.get("/login", (req, res) => {
     partials: {
       bootstrap: "./templates/partials/bootstrap.html",
       styles: "./templates/partials/styles.html",
+      header: "./templates/partials/header.html",
     },
   });
 });
@@ -141,6 +144,7 @@ app.get("/register", (req, res) => {
     partials: {
       bootstrap: "./templates/partials/bootstrap.html",
       styles: "./templates/partials/styles.html",
+      header: "./templates/partials/header.html",
     },
   });
 });
@@ -200,6 +204,7 @@ app.get("/addflightinfo", (req, res) => {
     partials: {
       bootstrap: "./templates/partials/bootstrap.html",
       styles: "./templates/partials/styles.html",
+      header: "./templates/partials/header.html",
     },
   });
 });

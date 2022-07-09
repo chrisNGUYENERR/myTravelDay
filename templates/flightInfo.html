@@ -9,10 +9,12 @@
 <body>
     ${styles}
     ${bootstrap}
-    <h1>myTravelDay</h1>
-    <form action="/addflightinfo" method="POST" class="flight_number_form">
-        <input type="text" name="flightNumber" placeholder="Enter Flight Number"><br><br>
-        <button type="submit">Add</button>
-    </form>
+    ${header}
+    <div class="container">
+        <form action="/addflightinfo" method="POST" class="flight_number_form">
+            <input type="text" name="flightNumber" placeholder="Enter Flight Number"><br><br>
+            <button type="submit">Add</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -10,7 +10,8 @@
 <body>
   ${styles}
   ${bootstrap}
-    <h1>myTravelDay</h1>
+  ${header}
+  <div class="container">
     <h3>Please Login:</h3>
     ${error ? `${error}`: ''}
     <form action="/login" method="POST" id="login">
@@ -22,11 +23,12 @@
       </div>
       <button class="formBtn" type="submit">Login</button>
     </form>
-    Need an account?
+    <p>Need an account?</p>
     <form method="GET" action="/register" class="inline">
       <button type="submit" name="submitBtnLink" class="link-button">
         Sign up here!
       </button>
+  </div>
 </body>
 
 <style>
