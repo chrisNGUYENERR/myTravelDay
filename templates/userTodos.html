@@ -12,8 +12,6 @@
     <div class="header">
         <h1>myTravelDay</h1>
     </div>
-    <br>
-    <br>
     <h1>Welcome back, ${data[0].username}!</h1> 
 
     <div class="flight">
@@ -51,17 +49,11 @@
                     </form>
                     `
             }).join('')}
+        
     </div>
     <form action="/inserttask" method="POST">
         <input type="text" name="todo" placeholder="Type New Task">
         <button type="submit">Add</button>
     </form>
-
-    <div class="container logoutBtn">
-        <form method="GET" action="/login" class="inline">
-            <button type="submit" name="logoutBtn" class="link-button">
-                Logout
-            </button>
-    </div>
 </body>
 </html>
