@@ -2,13 +2,44 @@
     body {
             background-color: #63a4ff;
             background-image: radial-gradient(circle, #6a93cb 0%, #a4bfef 74%);
-            color: yellow;
+            /* background-image: radial-gradient(circle, #63a4ff 0%, #83eaf1 74%); */
+            color: #fff;
             font-family: Helvetica;
             display: flex;
             align-items: center;
             margin: 0 auto;
             justify-content: center;
             flex-direction: column;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            font-size: 22px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .header {
+            flex-direction: row;
+            font-size: 16px;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+            background: #fff;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .header .container {
+            color: #6a93cb;
+            align-items: left;
+            justify-content: left;
         }
 
         .flight_number_form {
@@ -44,6 +75,12 @@
             border-radius: 10px;
             padding: 10px;
             display: flex;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .flight h3 {
+            font-size: 16px;
         }
 
         .flight div {
@@ -69,11 +106,24 @@
             color: #444;
             padding: 0px
         }
-    .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+        form button, form input, form optgroup, form select, form textarea {
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: none;
+        }
+
+        form button {
+            background:rgb(25, 87, 211);
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 10px;
+        }
+        
+        p {
+            margin: 5px 0;
+        }
+
 
     .taskForm {
         display: flex;
@@ -84,6 +134,7 @@
     
     .logoutBtn {
         display: flex;
+        
         width: 100vw;
         height: 100%;
         align-items: flex-end;
