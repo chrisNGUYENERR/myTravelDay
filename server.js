@@ -68,7 +68,7 @@ app.post("/", (req, res) => {
       } else {
         res.render("login", {
           locals: {
-            error: "Incorrect username or password",
+            error: "Incorrect password",
           },
           partials: {
             bootstrap: "./templates/partials/bootstrap.html",
