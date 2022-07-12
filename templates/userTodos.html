@@ -10,9 +10,10 @@
     ${styles}
     ${bootstrap}
     ${header}
+    <br>
     <div class="container">
     <h1>Welcome back, ${data[0].username}!</h1> 
-
+    <br>
     <div class="flight">
         <div>
             <h3>Airline Name:</h3>
@@ -37,23 +38,23 @@
     </div>
 
 
-
-    <div>My ToDo List:</div>
+    <br>
+    <div>Things To Do:</div>
 
     <div class="userTable">
         ${data.map(tasks => {
-            return `<form action="/deletetask" method="POST" class="taskForm">
-                        <li><label for="taskList" class="taskList">${tasks.todo}</label></li>
+            return `<form action="/deletetask/${tasks.id}" method="POST" class="taskForm">
+                        <li><label for="task" class="task">${tasks.todo}</label></li>
                         <button type="submit" class="deleteBtn">Delete</button>
                     </form>
                     `
             }).join('')}
-        
     </div>
-    <form action="/inserttask" method="POST">
-        <input type="text" name="todo" placeholder="Type New Task">
-        <button type="submit">Add</button>
+    ------------------------------------------
+    <form action="/inserttask" method="POST" class="newTaskForm">
+        <input type="text" class="newTaskSpace" name="todo" placeholder="Type New Task">
+        <button type="submit" class="newTaskBtn">Add</button>
     </form>
-</div>
+    </div>
 </body>
 </html>

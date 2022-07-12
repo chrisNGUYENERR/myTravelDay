@@ -41,37 +41,9 @@ app.use(
   })
 );
 
-//GET TABLES
-app.get("/getusertodos/", async (req, res) => {
-  try {
-    let { username } = req.session.user[0];
-    let flightInfo = await db.any(
-      `SELECT users.username, flightinfo.airline, flightinfo.dep_time, flightinfo.dep_port, flightinfo.arr_port, flightinfo.arr_gate FROM users LEFT JOIN flightinfo ON users.id = flightinfo.user_id WHERE users.username = '${username}'`
-    );
-    let response = await db.any(
-      `SELECT users.username, tasks.todo FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`
-    );
-    res.render("userTodos", {
-      locals: {
-        data: response,
-        flight: flightInfo,
-      },
-      partials: {
-        bootstrap: "./templates/partials/bootstrap.html",
-        styles: "./templates/partials/styles.html",
-        header: "./templates/partials/header.html",
-      },
-    });
-  } catch (error) {
-    res.send({
-      error,
-      msg: "Failed to retrieve user and todos",
-    });
-  }
-});
 
 //LOGIN
-app.get("/login", (req, res) => {
+app.get("/", (req, res) => {
   res.render("login", {
     locals: {
       error: null,
@@ -84,7 +56,7 @@ app.get("/login", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.post("/", (req, res) => {
   const { username, password } = req.body;
   db.any(
     `SELECT username, password FROM users WHERE username = '${username}'`
@@ -128,10 +100,41 @@ app.post("/register", async (req, res) => {
       username,
       hash,
     ]).then((result) => {
-      return res.redirect("/login");
+      return res.redirect("/");
     });
   });
 });
+
+
+//GET TABLES
+app.get("/getusertodos/", async (req, res) => {
+  try {
+    let { username } = req.session.user[0];
+    let flightInfo = await db.any(
+      `SELECT users.username, flightinfo.airline, flightinfo.dep_time, flightinfo.dep_port, flightinfo.arr_port, flightinfo.arr_gate FROM users LEFT JOIN flightinfo ON users.id = flightinfo.user_id WHERE users.username = '${username}'`
+    );
+    let response = await db.any(
+      `SELECT users.username, tasks.todo, tasks.id FROM users LEFT JOIN tasks ON users.id = tasks.user_id WHERE users.username = '${username}'`
+    );
+    res.render("userTodos", {
+      locals: {
+        data: response,
+        flight: flightInfo,
+      },
+      partials: {
+        bootstrap: "./templates/partials/bootstrap.html",
+        styles: "./templates/partials/styles.html",
+        header: "./templates/partials/header.html",
+      },
+    });
+  } catch (error) {
+    res.send({
+      error,
+      msg: "Failed to retrieve user and todos",
+    });
+  }
+});
+
 
 //ADD USERS + TASKS
 app.post("/insertuser", (req, res) => {
@@ -161,10 +164,10 @@ app.delete("/deleteuser", (req, res) => {
   res.send(req.body);
 });
 
-app.delete("/deletetask", (req, res) => {
-  const { todo } = req.body;
-  db.none(`DELETE FROM tasks WHERE todo = '${todo}'`);
-  res.send(req.body);
+app.post("/deletetask/:id", (req, res) => {
+  const { id } = req.params; 
+  db.none(`DELETE FROM tasks WHERE id = '${id}'`);
+  res.redirect("/getusertodos");
 });
 
 //FETCH API
